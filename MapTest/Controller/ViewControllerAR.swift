@@ -11,7 +11,7 @@ import SceneKit
 import ARKit
 
 class ViewControllerAR: UIViewController, ARSCNViewDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
     
     override func viewDidLoad() {
@@ -22,9 +22,9 @@ class ViewControllerAR: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         
         self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
-
+        
         sceneView.autoenablesDefaultLighting = true
-
+        
         let screenSize = UIScreen.main.bounds
         let buttonAR = UIButton(frame: CGRect(x: screenSize.height - screenSize.height/5, y: screenSize.width - screenSize.height/5, width: screenSize.height/7, height: screenSize.height/7))
         buttonAR.backgroundColor = .blue
@@ -66,18 +66,18 @@ class ViewControllerAR: UIViewController, ARSCNViewDelegate {
             let results = sceneView.hitTest(touchLocation, types: .existingPlaneUsingExtent)
             
             if let hitResult = results.first {
-
+                
                 // Create a new scene
                 let diceScene = SCNScene(named: "art.scnassets/diceCollada.scn")!
-
+                
                 if let diceNode = diceScene.rootNode.childNode(withName: "Dice", recursively: true) {
-
+                    
                     diceNode.position = SCNVector3(
                         x: hitResult.worldTransform.columns.3.x,
                         y: hitResult.worldTransform.columns.3.y + diceNode.boundingSphere.radius,
                         z: hitResult.worldTransform.columns.3.z
                     )
-
+                    
                     sceneView.scene.rootNode.addChildNode(diceNode)
                     
                     let randomX = Float((arc4random_uniform(4) + 1)) * (Float.pi/2)
@@ -85,7 +85,7 @@ class ViewControllerAR: UIViewController, ARSCNViewDelegate {
                     let randomZ = Float((arc4random_uniform(4) + 1)) * (Float.pi/2)
                     
                     diceNode.runAction(SCNAction.rotateBy(x: CGFloat(randomX * 5), y: 0, z: CGFloat(randomZ * 5), duration: 0.5))
-
+                    
                 }
                 
             }
@@ -99,10 +99,9 @@ class ViewControllerAR: UIViewController, ARSCNViewDelegate {
         
         if anchor is ARPlaneAnchor {
             
-            print("plane detected")
             
             let planeAnchor = anchor as! ARPlaneAnchor
-
+            
             let plane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
             
             let gridMaterial = SCNMaterial()
@@ -110,7 +109,7 @@ class ViewControllerAR: UIViewController, ARSCNViewDelegate {
             plane.materials = [gridMaterial]
             
             let planeNode = SCNNode()
-
+            
             planeNode.geometry = plane
             planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
             planeNode.transform = SCNMatrix4MakeRotation(-Float.pi/2, 1, 0, 0)
@@ -120,14 +119,14 @@ class ViewControllerAR: UIViewController, ARSCNViewDelegate {
         } else {
             return
         }
-
+        
     }
-
+    
     
     @objc func dismissAction(sender: UIButton!) {
         AppUtility.lockOrientation(.portrait)
         self.dismiss(animated: true, completion: nil)
     }
     
-
+    
 }

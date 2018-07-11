@@ -12,7 +12,7 @@ import CoreLocation
 
 
 class ViewController: UIViewController, CLLocationManagerDelegate, MGLMapViewDelegate {
-
+    
     let locationManager = CLLocationManager()
     let PopupVC = MessageBoxViewController()
     var popup : KLCPopup? = nil
@@ -23,7 +23,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MGLMapViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         AppUtility.lockOrientation(.portrait)
-
+        
         // Ask for Authorisation from the User.
         self.locationManager.requestAlwaysAuthorization()
         
@@ -35,7 +35,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MGLMapViewDel
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
-
+        
         popup = KLCPopup.init(contentView: PopupVC.view)
         PopupVC.buttonOK.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
         
@@ -44,22 +44,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MGLMapViewDel
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         AppUtility.lockOrientation(.portrait)
-
+        
         
         if(initMap){
             
             initGamepad()
             
             let duration = 1.0
-
-                if(gamePadImageImageView != nil){
-                    UIView.animate(withDuration: duration, animations: {
-                        self.gamePadImageImageView?.frame = CGRect(x: (self.gamePadImageImageView?.frame.size.width)!/3, y: (self.gamePadImageImageView?.frame.size.height)!/2, width: (self.gamePadImageImageView?.frame.size.width)!, height: (self.gamePadImageImageView?.frame.size.height)!)
-                    })
-                }
+            
+            if(gamePadImageImageView != nil){
+                UIView.animate(withDuration: duration, animations: {
+                    self.gamePadImageImageView?.frame = CGRect(x: (self.gamePadImageImageView?.frame.size.width)!/3, y: (self.gamePadImageImageView?.frame.size.height)!/2, width: (self.gamePadImageImageView?.frame.size.width)!, height: (self.gamePadImageImageView?.frame.size.height)!)
+                })
+            }
         }
     }
-
+    
     
     // MARK: Buttons init
     
@@ -75,7 +75,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MGLMapViewDel
         
         view.addSubview(button)
         
-
+        
         let button2 = UIButton(frame: CGRect(x: button.center.x+button.frame.size.width/6, y: button.center.y+button.frame.size.height/6, width: button.frame.size.width/3, height: button.frame.size.height/3))
         button2.backgroundColor = .blue
         button2.setTitle("23", for: .normal)
@@ -84,7 +84,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MGLMapViewDel
         button2.addTarget(self, action: #selector(buttonAction2), for: .touchUpInside)
         
         view.addSubview(button2)
-
+        
         
         let buttonAR = UIButton(frame: CGRect(x: screenSize.width - screenSize.width/5, y: screenSize.height - screenSize.width/5, width: screenSize.width/7, height: screenSize.width/7))
         buttonAR.backgroundColor = .blue
@@ -129,33 +129,31 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MGLMapViewDel
             gamePadImageImageView?.addSubview(gamePadButon2)
         }
     }
-
+    
     // MARK: Buttons actions
     
     @objc func buttonAction(sender: UIButton!) {
         PopupVC.mainLabel.text = "Button1 message"
         popup?.show();
         
-        
-        print("device orientation")
         print(UIDevice.current.orientation.isPortrait)
     }
-
+    
     @objc func buttonAction2(sender: UIButton!) {
         PopupVC.mainLabel.text = "Button2 message"
         popup?.show();
     }
-
+    
     @objc func buttonAction3(sender: UIButton!) {
         PopupVC.mainLabel.text = "Button3 message"
         popup?.show();
     }
-
+    
     @objc func buttonAction4(sender: UIButton!) {
         PopupVC.mainLabel.text = "Button4 message"
         popup?.show();
     }
-
+    
     @objc func buttonActionAR(sender: UIButton!) {
         let duration = 1.0
         
@@ -166,9 +164,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MGLMapViewDel
                 self.performSegue(withIdentifier: "segueAR", sender: nil)
             })
         }
-
+        
     }
-
+    
     
     @objc func dismissPopup(sender:UIButton!){
         sender.dismissPresentingPopup()
@@ -254,12 +252,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MGLMapViewDel
                 imageName = "polandball"
             case "Germany Ball":
                 imageName = "germanyball"
-
+                
             default:
                 imageName = "defaultball"
             }
         }
-
+        
         return UIImage(named: imageName)!
     }
     
