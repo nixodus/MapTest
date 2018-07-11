@@ -59,10 +59,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MGLMapViewDel
                 }
         }
     }
-    
-
-
-
 
     
     // MARK: Buttons init
